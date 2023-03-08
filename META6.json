@@ -1,0 +1,25 @@
+{
+  "auth": "zef:tbrowder",
+  "authors": [
+    "Tom Browder"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "Provides dates, names, alternate names, and dates observed for US Federal holidays",
+  "license": "Artistic-2.0",
+  "name": "Holidays::US::Federal",
+  "perl": "6.d",
+  "provides": {
+    "Holidays::US::Federal": "lib/Holidays/US/Federal.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}
