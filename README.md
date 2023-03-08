@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/tbrowder/Holidays-US-Federal/actions/workflows/linux.yml/badge.svg)](https://github.com/tbrowder/Holidays-US-Federal/actions) [![Actions Status](https://github.com/tbrowder/Holidays-US-Federal/actions/workflows/macos.yml/badge.svg)](https://github.com/tbrowder/Holidays-US-Federal/actions) [![Actions Status](https://github.com/tbrowder/Holidays-US-Federal/actions/workflows/windows.yml/badge.svg)](https://github.com/tbrowder/Holidays-US-Federal/actions)
+
 NAME
 ====
 
