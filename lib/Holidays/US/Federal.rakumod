@@ -1,75 +1,87 @@
 unit module Holidays::US::Federal;
 
 # 11 federal holidays as legislated in 5 U.S. Code S 6103
-our %hols is export = [
-    {
+#    names are as specified in that law
+our %holidays is export = [
+    1 => {
         name => "New Year's Day",
-        short-name => "",
         date => "0000-01-01",
-        date-observed => &get-new-years-day,
-    },
-    {
-        name => "Birthday of Martin Luther King, Jr.",
+        date-observed => "", 
         short-name => "",
-        date => "", # third Monday of January
-        date-observed => &get-mlk-day,
+        key => 1,
     },
-    {
-        name => "Washington's Birthday",
-        short-name => "",
-        date => "", # third Monday of February
-        date-observed => &get-gw-day,
-    },
-    {
-        name => "Memorial Day",
-        short-name => "",
-        date => "", # last Monday in May
-        date-observed => &get-mem-day,
-    },
-    {
+    5 => {
         name => "Juneteenth National Independence Day",
-        short-name => "",
         date => "0000-06-19", 
-        date-observed => &get-jni-day,
+        date-observed => "", 
+        short-name => "",
+        key => 5,
     },
-    {
+    6 => {
         name => "Independence Day",
-        short-name => "",
         date => "0000-07-04", 
-        date-observed => &get-j4th-day,
-    },
-    {
-        name => "Labor Day",
+        date-observed => "",
         short-name => "",
-        date => "", # first Monday in September 
-        date-observed => &get-labor-day,
+        key => 6,
     },
-    {
-        name => "Columbus Day",
-        short-name => "",
-        date => "", # second Monday in October 
-        date-observed => &get-columbus-day,
-    },
-    {
+    9 => {
         name => "Veterans Day",
-        short-name => "0000-11-11",
-        date => "", # month and day of the armistice ending WW I fighting  
-        date-observed => &get-vets-day,
-    },
-    {
-        name => "Thanksgiving Day",
+        date => "0000-11-11", # month and day of the armistice ending WW I fighting  
+        date-observed => "",
         short-name => "",
-        date => "", # fourth Thursday in November
-        date-observed => &get-thanks-day,
+        key => 9,
     },
-    {
+    11 => {
         name => "Christmas Day",
-        short-name => "",
         date => "0000-12-31",   
-        date-observed => &get-xmas-day,
+        date-observed => "", 
+        short-name => "",
+        key => 11,
     },
 
-
+    # calculated actual and observed date
+    2 => {
+        name => "Birthday of Martin Luther King, Jr.",
+        date => "", # third Monday of January
+        date-observed => "", 
+        short-name => "",
+        key => 2,
+    },
+    3 => {
+        name => "Washington's Birthday",
+        date => "", # third Monday of February
+        date-observed => "",
+        short-name => "",
+        key => 3,
+    },
+    4 => {
+        name => "Memorial Day",
+        date => "", # last Monday in May
+        date-observed => "",
+        short-name => "",
+        key => 4,
+    },
+    7 => {
+        name => "Labor Day",
+        date => "", # first Monday in September 
+        date-observed => "", 
+        short-name => "",
+        key => 7,
+    },
+    8 => {
+        name => "Columbus Day",
+        date => "", # second Monday in October 
+        date-observed => "",
+        short-name => "",
+        key => 8,
+    },
+    10 => {
+        name => "Thanksgiving Day",
+        date => "", # fourth Thursday in November
+        date-observed => "",
+        short-name => "",
+        key => 10,
+    },
 ];
 
 # Routines for calculating dates observed for federal holidays:
@@ -80,37 +92,101 @@ our %hols is export = [
 #      it is observed on the previous Friday. When the date falls
 #      on a Sunday, it is observed on the following Monday.
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-observed-day(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
+    # Holidays with attribute date => "0000-nn-nn" are subject to the weekend
+    # rule and have two dates: actual and observed (which are the same
+    # if the actual date is NOT on a weekend).
+    #
+    # Holidays with attribute date => "" (empty) are subject to the 
+    # directed or calculated rule and their actual and observed dates
+    # are the same.
+
+    my $name          = %holidays{$key}<name>;
+    my $date          = %holidays{$key}<date>;
+    my $date-observed = %holidays{$key}<date-observed>;
+    my $short-name    = %holidays{$key}<short-name>;
+    my $check-key     = %holidays{$key}<key>;
+
+    if $date ~ /^ '0000-' (\S\S) '-' (\S\S) / {
+        my $month = ~$0;
+        my $day   = ~$1;
+        # the actual date
+        $date = Date.new("$year-$month-$day");    
+        # check if its on a weekend
+    }
+    else {
+        # date and observed are the same and must be calculated
+        calc-date :$name, :$year, :$debug; 
+    }
+}
+sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
+    my Date $date;
+
+    with $name {
+        when $_.contains("Martin") {
+            # Birthday of Martin Luther King, Jr. 
+            # third Monday of January
+        }
+        when $_.contains("Washington") {
+            # Washington's Birthday               
+            # third Monday of February
+        }
+        when $_.contains("Memorial") {
+            # Memorial Day                        
+            # last Monday in May
+        }
+        when $_.contains("Labor") {
+            # Labor Day                           
+            # first Monday in September 
+        }
+        when $_.contains("Columbia") {
+            # Columbus Day                        
+            # second Monday in October 
+        }
+        when $_.contains("Thanksgiving") {
+            # Thanksgiving Day                    
+            # fourth Thursday in November
+        }
+        default {
+            die "FATAL: Unknown holiday '$name'";
+        }
+    }
+    $date
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+=finish
+
+sub get-new-years-day(:$year!, :$debug --> Date) is export {
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-mlk-day(:$year!, :$debug --> Date) is export {
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-gw-day(:$year!, :$debug --> Date) is export {
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-mem-day(:$year!, :$debug --> Date) is export {
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-jni-day(:$year!, :$debug --> Date) is export {
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-j4th-day(:$year!, :$debug --> Date) is export {
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-labor-day(:$year!, :$debug --> Date) is export {
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-columbus-day(:$year!, :$debug --> Date) is export {
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-vets-day(:$year!, :$debug --> Date) is export {
 }
 
-sub get--day(:$year!, :$debug --> Date) is export {
+sub get-thanks-day(:$year!, :$debug --> Date) is export {
+}
+
+sub get-xmas-day(:$year!, :$debug --> Date) is export {
 }
 
 
