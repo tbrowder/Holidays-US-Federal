@@ -107,7 +107,7 @@ sub get-observed-day(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
     my $short-name    = %holidays{$key}<short-name>;
     my $check-key     = %holidays{$key}<key>;
 
-    if $date ~ /^ '0000-' (\S\S) '-' (\S\S) / {
+    if $date ~~ /^ '0000-' (\S\S) '-' (\S\S) / {
         my $month = ~$0;
         my $day   = ~$1;
         # the actual date
@@ -119,6 +119,7 @@ sub get-observed-day(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
         calc-date :$name, :$year, :$debug; 
     }
 }
+
 sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
     my Date $date;
 
@@ -139,7 +140,7 @@ sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
             # Labor Day                           
             # first Monday in September 
         }
-        when $_.contains("Columbia") {
+        when $_.contains("Columbus") {
             # Columbus Day                        
             # second Monday in October 
         }
@@ -153,40 +154,3 @@ sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
     }
     $date
 }
-
-=finish
-
-sub get-new-years-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-mlk-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-gw-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-mem-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-jni-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-j4th-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-labor-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-columbus-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-vets-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-thanks-day(:$year!, :$debug --> Date) is export {
-}
-
-sub get-xmas-day(:$year!, :$debug --> Date) is export {
-}
-
-
