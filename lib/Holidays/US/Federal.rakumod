@@ -121,7 +121,7 @@ sub get-observed-day(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
 }
 
 sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
-    my Date $date;
+    my Date $date = Date.new: :$year;
 
     with $name {
         when $_.contains("Martin") {
