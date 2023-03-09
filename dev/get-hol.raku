@@ -35,7 +35,10 @@ for @k -> $K {
     my $date-observed = %h<date-observed>;
     my $key = %h<key>;
     
-    get-observed-day(:$year, :$key, :%holidays, :$debug); # --> Date) is export {
-    
+    $date-observed = get-observed-date(:$year, :$key, :%holidays, :$debug); 
+    say "Holiday: $name";
+    say "  date    : $date";
+    say "  observed: $date-observed";
+
     #calc-date(:$name, :$year, :$debug); # is export {
 }

@@ -92,7 +92,7 @@ our %holidays is export = [
 #      it is observed on the previous Friday. When the date falls
 #      on a Sunday, it is observed on the following Monday.
 
-sub get-observed-day(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
+sub get-observed-date(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
     # Holidays with attribute date => "0000-nn-nn" are subject to the weekend
     # rule and have two dates: actual and observed (which are the same
     # if the actual date is NOT on a weekend).
@@ -112,7 +112,19 @@ sub get-observed-day(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
         my $day   = ~$1;
         # the actual date
         $date = Date.new("$year-$month-$day");    
-        # check if its on a weekend
+        # check if it's on a weekend
+        my $dow = $date.day-of-week; # 1..7 Mon..Sun
+        if $dow == 6 {
+            # use previous day (Friday)
+            $date-observed = $date.pred;
+        }
+        elsif $dow == 7 {
+            # use next day (Monday)
+            $date-observed = $date.succ;
+        }
+        else {
+            $date-observed = $date;
+        }
     }
     else {
         # date and observed are the same and must be calculated
@@ -121,32 +133,48 @@ sub get-observed-day(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
 }
 
 sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
-    my Date $date = Date.new: :$year;
+    my Date $date;
 
     with $name {
+        my ($month, $day);
         when $_.contains("Martin") {
             # Birthday of Martin Luther King, Jr. 
             # third Monday of January
+            $month = 1;
+            $date = Date.new: :$year, :$month;
+            my $d = $date.day-of-week; # 1..7 Mon..Sun 
+
+            my $w = $date.weekday-of-month; # 
         }
         when $_.contains("Washington") {
             # Washington's Birthday               
             # third Monday of February
+            $month = 2;
+            $date = Date.new: :$year, :$month;
         }
         when $_.contains("Memorial") {
             # Memorial Day                        
             # last Monday in May
+            $month = 5;
+            $date = Date.new: :$year, :$month;
         }
         when $_.contains("Labor") {
             # Labor Day                           
             # first Monday in September 
+            $month = 9;
+            $date = Date.new: :$year, :$month;
         }
         when $_.contains("Columbus") {
             # Columbus Day                        
             # second Monday in October 
+            $month = 10;
+            $date = Date.new: :$year, :$month;
         }
         when $_.contains("Thanksgiving") {
             # Thanksgiving Day                    
             # fourth Thursday in November
+            $month = 11;
+            $date = Date.new: :$year, :$month;
         }
         default {
             die "FATAL: Unknown holiday '$name'";
@@ -154,3 +182,39 @@ sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
     }
     $date
 }
+
+sub date-of-monday(:$year!, :$month!, UInt :$cardinal!, :$debug --> Date) is export {
+    # Returns the date of the cardinal number of Mondays
+    my Date $date .= new: :$year, :$month;
+    my $dow = $date.day-of-week; # 1..7 Mon..Sun 
+    my $d = $date;
+    # get the first Monday
+    if $dow > 1 {
+        # days until Monday
+        my $nd = 8 - $dow;
+        $d += $nd; 
+    }
+    # get the $cardinal Monday
+    my $nd = 7 * ($cardinal - 1);
+    $d += $nd; 
+}
+
+sub date-of-thursday(:$year!, :$month!, :$cardinal!, :$debug --> Date) is export {
+    # Returns the date of the cardinal number of Thursdays
+    my Date $date .= new: :$year, :$month;
+    my $dow = $date.day-of-week; # 1..7 Mon..Sun 
+    my $d = $date;
+    # get the first Thursday (dow 4)
+    die "Tom, fix this";
+    if $dow > 4 {
+        # days until Thursday
+        my $nd = 8 - $dow;
+        $d += $nd; 
+    }
+    elsif $dow < 4 {
+    }
+    # get the $cardinal Thursday
+    my $nd = 7 * ($cardinal - 1);
+    $d += $nd; 
+}
+
