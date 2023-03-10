@@ -1,5 +1,15 @@
 unit module Holidays::US::Federal;
 
+use Date::Utils;
+
+class Holiday is export {
+    has Date $.date;
+    has Date $.date-observed;
+    has      $.name;
+    has      $.short-name;
+    has Int  $.id;
+}
+ 
 # 11 federal holidays as legislated in 5 U.S. Code S 6103
 #    names are as specified in that law
 our %holidays is export = [
@@ -8,35 +18,35 @@ our %holidays is export = [
         date => "0000-01-01",
         date-observed => "", 
         short-name => "",
-        key => 1,
+        id => 1,
     },
     5 => {
         name => "Juneteenth National Independence Day",
         date => "0000-06-19", 
         date-observed => "", 
         short-name => "",
-        key => 5,
+        id => 5,
     },
     6 => {
         name => "Independence Day",
         date => "0000-07-04", 
         date-observed => "",
         short-name => "",
-        key => 6,
+        id => 6,
     },
     9 => {
         name => "Veterans Day",
         date => "0000-11-11", # month and day of the armistice ending WW I fighting  
         date-observed => "",
         short-name => "",
-        key => 9,
+        id => 9,
     },
     11 => {
         name => "Christmas Day",
         date => "0000-12-31",   
         date-observed => "", 
         short-name => "",
-        key => 11,
+        id => 11,
     },
 
     # calculated actual and observed date
@@ -45,44 +55,53 @@ our %holidays is export = [
         date => "", # third Monday of January
         date-observed => "", 
         short-name => "",
-        key => 2,
+        id => 2,
     },
     3 => {
         name => "Washington's Birthday",
         date => "", # third Monday of February
         date-observed => "",
         short-name => "",
-        key => 3,
+        id => 3,
     },
     4 => {
         name => "Memorial Day",
         date => "", # last Monday in May
         date-observed => "",
         short-name => "",
-        key => 4,
+        id => 4,
     },
     7 => {
         name => "Labor Day",
         date => "", # first Monday in September 
         date-observed => "", 
         short-name => "",
-        key => 7,
+        id => 7,
     },
     8 => {
         name => "Columbus Day",
         date => "", # second Monday in October 
         date-observed => "",
         short-name => "",
-        key => 8,
+        id => 8,
     },
     10 => {
         name => "Thanksgiving Day",
         date => "", # fourth Thursday in November
         date-observed => "",
         short-name => "",
-        key => 10,
+        id => 10,
     },
 ];
+
+sub get-holidays(:$year!, :$debug --> List) is export {
+    my @h;
+    for %holidays -> $id {
+        my Holiday $h = calc-holiday-dates :$year, :$id, :$debug;
+        @h.push: $h;
+    }
+    @h
+}
 
 # Routines for calculating dates observed for federal holidays:
 # There are two types:
@@ -92,7 +111,7 @@ our %holidays is export = [
 #      it is observed on the previous Friday. When the date falls
 #      on a Sunday, it is observed on the following Monday.
 
-sub get-observed-date(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
+sub calc-holiday-dates(:$year!, :$id!, :$debug --> Holiday) is export {
     # Holidays with attribute date => "0000-nn-nn" are subject to the weekend
     # rule and have two dates: actual and observed (which are the same
     # if the actual date is NOT on a weekend).
@@ -101,11 +120,11 @@ sub get-observed-date(:$year!, :$key!, :%holidays!, :$debug --> Date) is export 
     # directed or calculated rule and their actual and observed dates
     # are the same.
 
-    my $name          = %holidays{$key}<name>;
-    my $date          = %holidays{$key}<date>;
-    my $date-observed = %holidays{$key}<date-observed>;
-    my $short-name    = %holidays{$key}<short-name>;
-    my $check-key     = %holidays{$key}<key>;
+    my $name          = %holidays{$id}<name>;
+    my $date          = %holidays{$id}<date>;
+    my $date-observed = %holidays{$id}<date-observed>;
+    my $short-name    = %holidays{$id}<short-name>;
+    my $check-id     = %holidays{$id}<id>;
 
     if $date ~~ /^ '0000-' (\S\S) '-' (\S\S) / {
         my $month = ~$0;
@@ -128,93 +147,74 @@ sub get-observed-date(:$year!, :$key!, :%holidays!, :$debug --> Date) is export 
     }
     else {
         # date and observed are the same and must be calculated
-        calc-date :$name, :$year, :$debug; 
+        $date = calc-date :$name, :$year, :$debug; 
+        $date-observed = $date;
     }
+    Holiday.new: :$date, :$date-observed, :$id, :$name, :$short-name;
 }
 
 sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
     my Date $date;
-
     with $name {
-        my ($month, $day);
+        my ($month, $nth, $dow);
         when $_.contains("Martin") {
             # Birthday of Martin Luther King, Jr. 
             # third Monday of January
             $month = 1;
-            $date = Date.new: :$year, :$month;
-            my $d = $date.day-of-week; # 1..7 Mon..Sun 
-
-            my $w = $date.weekday-of-month; # 
+            $dow   = 1;
+            $nth   = 3;
+            $date  = nth-day-of-week-in-month :$year, :$month, 
+                     :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Washington") {
             # Washington's Birthday               
             # third Monday of February
-            $month = 2;
-            $date = Date.new: :$year, :$month;
+            $month    = 2;
+            $dow   = 1;
+            $nth   = 3;
+            $date  = nth-day-of-week-in-month :$year, :$month, 
+                     :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Memorial") {
             # Memorial Day                        
             # last Monday in May
+            $dow   = 1;
+            $nth   = -1;
             $month = 5;
-            $date = Date.new: :$year, :$month;
+            $date  = nth-day-of-week-in-month :$year, :$month, 
+                     :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Labor") {
             # Labor Day                           
             # first Monday in September 
+            $dow   = 1;
             $month = 9;
-            $date = Date.new: :$year, :$month;
+            $nth   = 1;
+            $date  = nth-day-of-week-in-month :$year, :$month, 
+                     :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Columbus") {
             # Columbus Day                        
             # second Monday in October 
+            $dow   = 1;
             $month = 10;
-            $date = Date.new: :$year, :$month;
+            $nth   = 2;
+            $date  = nth-day-of-week-in-month :$year, :$month, 
+                     :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Thanksgiving") {
             # Thanksgiving Day                    
             # fourth Thursday in November
+            $dow   = 4;
             $month = 11;
-            $date = Date.new: :$year, :$month;
+            $nth   = 4;
+            $date  = nth-day-of-week-in-month :$year, :$month, 
+                     :day-of-week($dow), :$nth, :$debug;
         }
         default {
             die "FATAL: Unknown holiday '$name'";
         }
     }
     $date
-}
-
-sub date-of-monday(:$year!, :$month!, UInt :$cardinal!, :$debug --> Date) is export {
-    # Returns the date of the cardinal number of Mondays
-    my Date $date .= new: :$year, :$month;
-    my $dow = $date.day-of-week; # 1..7 Mon..Sun 
-    my $d = $date;
-    # get the first Monday
-    if $dow > 1 {
-        # days until Monday
-        my $nd = 8 - $dow;
-        $d += $nd; 
-    }
-    # get the $cardinal Monday
-    my $nd = 7 * ($cardinal - 1);
-    $d += $nd; 
-}
-
-sub date-of-thursday(:$year!, :$month!, :$cardinal!, :$debug --> Date) is export {
-    # Returns the date of the cardinal number of Thursdays
-    my Date $date .= new: :$year, :$month;
-    my $dow = $date.day-of-week; # 1..7 Mon..Sun 
-    my $d = $date;
-    # get the first Thursday (dow 4)
-    die "Tom, fix this";
-    if $dow > 4 {
-        # days until Thursday
-        my $nd = 8 - $dow;
-        $d += $nd; 
-    }
-    elsif $dow < 4 {
-    }
-    # get the $cardinal Thursday
-    my $nd = 7 * ($cardinal - 1);
-    $d += $nd; 
 }
 

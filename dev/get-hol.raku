@@ -33,12 +33,12 @@ for @k -> $K {
     my $name = %h<name>;
     my $date = %h<date>;
     my $date-observed = %h<date-observed>;
-    my $key = %h<key>;
+    my $id = %h<id>;
     
-    $date-observed = get-observed-date(:$year, :$key, :%holidays, :$debug); 
-    say "Holiday: $name";
-    say "  date    : $date";
-    say "  observed: $date-observed";
-
-    #calc-date(:$name, :$year, :$debug); # is export {
+    my Holiday $h = calc-holiday-dates(:$year, :$id, :$debug); 
+    say "Holiday: {$h.name}";
+    say "  date    : {$h.date}";
+    say "  observed: {$h.date-observed}";
 }
+
+my @h = get-holidays :$year;

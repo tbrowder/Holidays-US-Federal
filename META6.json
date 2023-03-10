@@ -6,6 +6,7 @@
   "build-depends": [
   ],
   "depends": [
+    "Date::Utils"
   ],
   "description": "Provides dates, names, alternate names, and dates observed for US Federal holidays",
   "license": "Artistic-2.0",
