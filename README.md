@@ -23,7 +23,7 @@ For this collection there should be no overlapping holidays. Each instance is on
 
 Note the holidays also have a `short-name` attribute which is not official but has the value used by the author for his calendars.
 
-  * NOTE: During the devlopment of this module, functions for finding dates relative to other dates were found to be necessary and were coded and published as a new Raku module: **Date:Utils**. Those routines are expected to be useful for various calendar creation. They are:
+  * NOTE: During the devlopment of this module, functions for finding dates relative to other dates were found to be necessary and were coded and published as a new Raku module: **Date:Utils**. Those routines are expected to be useful for various calendar creation projects. They are:
 
       * `nth-day-of-week-in-month`
 

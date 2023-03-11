@@ -45,7 +45,7 @@ but has the value used by the author for his calendars.
 NOTE: During the devlopment of this module, functions for finding dates relative
 to other dates were found to be necessary and were coded and published
 as a new Raku module: B<Date:Utils>. Those routines are expected to be
-useful for various calendar creation. They are:
+useful for various calendar creation projects. They are:
 
 =item C<nth-day-of-week-in-month>
 =item C<nth-day-of-week-after-date>
