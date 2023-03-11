@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-B<Holidays::US::Federal> - Provides dates, names, alternate names, and dates observed for US Federal holidays
+B<Holidays::US::Federal> - Provides names, dates, and dates observed for US Federal holidays
 
 =head1 SYNOPSIS
 
@@ -15,22 +15,56 @@ use Holidays::US::Federal;
 =head1 DESCRIPTION
 
 B<Holidays::US::Federal> is a module that provides information on
-official U.S. federal holidays as of 2023-03-08 according to data
+the eleven official U.S. federal holidays as of 2023-03-08 according to data
 available online at 
 L<https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/>.
 A description of the rules for traditional dates and when holidays are 
 actually observed as paid holidays off for federal employees
-is also found in the PDF document in the C</docs> directory herein.
+is also found on the site. All the data reflect current laws.
+in 5 US Code 6103.
 
-The module provides one routine which provides a list of the holidays
-for a given year. The list consists of an entry for each holiday
-with pertinent data for each.
+This module provides a routine which provides a hash of the holidays
+for a given year keyed by each holiday's C<date> and C<date-observed>.
+Each key is a Raku C<Date> and the key's value is 
+a C<class FedHoliday> object.
+The data are perpetual for any given 
+year as long as 5 US Code 6103 stays unchanged.
+
+For this collection there should be no overlapping holidays.
+Each instance is one with two different date attributes:
+(1) the traditional C<date> and (2) the C<date-observed>
+which is the paid day-off for most federal government employees (as well as
+for many other employees in the US labor force).
+If the dates are identical, then that date is the one to use on a calendar.
+If they are different, then both should be used.
+
+Note the holidays also have a C<short-name> attribute which is not official
+but has the value used by the author for his calendars.
+
+=begin item 
+NOTE: During the devlopment of this module, functions for finding dates relative
+to other dates were found to be necessary and were coded and published
+as a new Raku module: B<Date:Utils>. Those routines are expected to be
+useful for various calendar creation. They are:
+
+=item C<nth-day-of-week-in-month>
+=item C<nth-day-of-week-after-date>
+
+For convenience, the routines have alternative names requiring fewer
+key strokes. They are:
+
+=item C<nth-dow-in-month>
+=item C<nth-dow-after-date>
+
+=end item
+
+=head2 Example use
 
 =begin code
-use Date::Event;
+use Holidays:US::Federal;
 class FedHoliday is Date::Event {};
-sub fed-holidays(:$year!, :$debug --> List) is export {
-    my FedHoliday @h = get-holidays $year;
+sub get-fedholidays(:$year!, :$debug --> Hash) is export {
+    my FedHoliday @h = get-fedholidays $year;
     @h
 }
 =end code

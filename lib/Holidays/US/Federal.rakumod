@@ -7,25 +7,27 @@ class FedHoliday is Date::Event {};
 
 # 11 federal holidays as legislated in 5 U.S. Code S 6103
 #    names are as specified in that law
+# the 'short-name' values are not official but are the ones
+# used by the author in his calendars
 our %fedholidays is export = [
     1 => {
         name => "New Year's Day",
         date => "0000-01-01",
         date-observed => "", 
-        short-name => "",
+        short-name => "New Years Day",
         id => 1,
     },
     5 => {
         name => "Juneteenth National Independence Day",
         date => "0000-06-19", 
         date-observed => "", 
-        short-name => "",
+        short-name => "Juneteenth",
         id => 5,
     },
     6 => {
         name => "Independence Day",
         date => "0000-07-04", 
-        date-observed => "",
+        date-observed => "Independence Day",
         short-name => "",
         id => 6,
     },
@@ -33,14 +35,14 @@ our %fedholidays is export = [
         name => "Veterans Day",
         date => "0000-11-11", # month and day of the armistice ending WW I fighting  
         date-observed => "",
-        short-name => "",
+        short-name => "Veterans Day",
         id => 9,
     },
     11 => {
         name => "Christmas Day",
         date => "0000-12-31",   
         date-observed => "", 
-        short-name => "",
+        short-name => "Christmas Day",
         id => 11,
     },
 
@@ -49,56 +51,57 @@ our %fedholidays is export = [
         name => "Birthday of Martin Luther King, Jr.",
         date => "", # third Monday of January
         date-observed => "", 
-        short-name => "",
+        short-name => "MLK Day",
         id => 2,
     },
     3 => {
         name => "Washington's Birthday",
         date => "", # third Monday of February
         date-observed => "",
-        short-name => "",
+        short-name => "GW Birthday",
         id => 3,
     },
     4 => {
         name => "Memorial Day",
         date => "", # last Monday in May
         date-observed => "",
-        short-name => "",
+        short-name => "Memorial Day",
         id => 4,
     },
     7 => {
         name => "Labor Day",
         date => "", # first Monday in September 
         date-observed => "", 
-        short-name => "",
+        short-name => "Labor Day",
         id => 7,
     },
     8 => {
         name => "Columbus Day",
         date => "", # second Monday in October 
         date-observed => "",
-        short-name => "",
+        short-name => "Columbus Day",
         id => 8,
     },
     10 => {
         name => "Thanksgiving Day",
         date => "", # fourth Thursday in November
         date-observed => "",
-        short-name => "",
+        short-name => "Thanksgiving",
         id => 10,
     },
 ];
 
-sub get-holidays(:$year!, :$debug --> List) is export {
-    my @h;
-    for %fedholidays -> $id {
+sub get-fedholidays(:$year!, :$debug --> Hash) is export {
+    my %h;
+    for %fedholidays.keys -> $id {
         my FedHoliday $h = calc-holiday-dates :$year, :$id, :$debug;
-        @h.push: $h;
+        %h{$h.date}          = $h;
+        %h{$h.date-observed} = $h;
     }
-    @h
+    %h
 }
 
-# Routines for calculating dates observed for federal holidays:
+# Routines for calculating dates observed for US federal holidays:
 # There are two types:
 #   1. Those holidays designated as a certain day of the month.
 #   2. Those holidays with assigned dates that may fall on
@@ -107,7 +110,7 @@ sub get-holidays(:$year!, :$debug --> List) is export {
 #      on a Sunday, it is observed on the following Monday.
 
 sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
-    # FedHolidays with attribute date => "0000-nn-nn" are subject to the weekend
+    # FedHolidays defined in the %fedholidays hash with attribute date => "0000-nn-nn" are subject to the weekend
     # rule and have two dates: actual and observed (which are the same
     # if the actual date is NOT on a weekend).
     #
@@ -121,6 +124,7 @@ sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
     my $short-name    = %fedholidays{$id}<short-name>;
     my $check-id      = %fedholidays{$id}<id>;
 
+    # directed date
     if $date ~~ /^ '0000-' (\S\S) '-' (\S\S) / {
         my $month = ~$0;
         my $day   = ~$1;
@@ -141,6 +145,7 @@ sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
         }
     }
     else {
+        # calculated date:
         # date and observed are the same and must be calculated
         $date = calc-date :$name, :$year, :$debug; 
         $date-observed = $date;

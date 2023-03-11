@@ -1,6 +1,6 @@
 use Test;
 use Holidays::US::Federal;
 
-pass "replace me";
+use-ok 'Holidays::US::Federal';
 
 done-testing;

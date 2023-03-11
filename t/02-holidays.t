@@ -15,10 +15,10 @@ use Holidays::US::Federal;
 #  11 Christmas
 
 my $year = 2023;
-for 1..11 -> $k {
-    #my $
-    #sub get-observed-date(:$year!, :$key!, :%holidays!, :$debug --> Date) is export {
+my %h = get-fedholidays :$year;
+my @d = %h.keys.sort({$^a cmp $^b});
+for @d -> $date {
+    my $h = %h{$date}
 }
-
 
 done-testing;
