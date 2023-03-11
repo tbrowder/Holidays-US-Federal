@@ -21,14 +21,14 @@ L<https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/>.
 A description of the rules for traditional dates and when holidays are 
 actually observed as paid holidays off for federal employees
 is also found on the site. All the data reflect current laws
-in 5 US Code 6103.
+in Title 5 US Code Section 6103.
 
 This module provides a routine which provides a hash of the holidays
 for a given year keyed by each holiday's C<date>.
 Each key is a Raku C<Date> and the key's value is 
 a C<class FedHoliday> object.
 The data are perpetual for any given 
-year as long as 5 US Code 6103 stays unchanged.
+year as long as Title 5 US Code Section 6103 stays unchanged.
 
 For this collection there should be no overlapping holidays.
 Each instance is one with two different date attributes:
