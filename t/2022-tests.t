@@ -3,7 +3,7 @@ use Holidays::US::Federal;
 
 # YEAR: 2022
 
-# holiday keys:
+# holidays: id and name:
 #   1 New Year's Day
 #   2 Martin Luther King's Birthday
 #   3 George Washington's Birthday
@@ -26,6 +26,7 @@ for @d -> $D {
     my $do = $h.date-observed;
     my $n  = $h.name;
     my $ns = $h.short-name;
+    my $id = $h.id;
 
     my $show-on-cal;
     if $d == $do {
@@ -41,6 +42,34 @@ for @d -> $D {
     elsif $date == $do {
         # observed
         # show "Fed. Holiday" on calendar
+    }
+
+    # tests
+    with $id {
+        when /^1$/ {
+            is $date, $d;
+            is $date-1, $do;
+        }
+        when /2/ {
+        }
+        when /3/ {
+        }
+        when /4/ {
+        }
+        when /5/ {
+        }
+        when /6/ {
+        }
+        when /7/ {
+        }
+        when /8/ {
+        }
+        when /9/ {
+        }
+        when /10/ {
+        }
+        when /11/ {
+        }
     }
 }
 
