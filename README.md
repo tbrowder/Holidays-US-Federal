@@ -17,17 +17,12 @@ DESCRIPTION
 
 **Holidays::US::Federal** is a module that provides information on official U.S. federal holidays as of 2023-03-08 according to data available online at [https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/](https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/). A description of the rules for traditional dates and when holidays are actually observed as paid holidays off for federal employees is also found in the PDF document in the `/docs` directory herein.
 
-The module provides one routine which provides a list of the holidays for a given year. The list consists of an entry for each holidays with pertinent data for each.
+The module provides one routine which provides a list of the holidays for a given year. The list consists of an entry for each holiday with pertinent data for each.
 
-    class FedHoliday is export {
-        has $.name;
-        has $.date;
-        has $.short-name;
-        has $.observed;
-    }
-
+    use Date::Event;
+    class FedHoliday is Date::Event {};
     sub fed-holidays(:$year!, :$debug --> List) is export {
-        my FedHoliday @h = !get-holidays $year;
+        my FedHoliday @h = get-holidays $year;
         @h
     }
 

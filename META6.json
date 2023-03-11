@@ -6,6 +6,8 @@
   "build-depends": [
   ],
   "depends": [
+    "Text::Utils",
+    "Date::Event",
     "Date::Utils"
   ],
   "description": "Provides dates, names, alternate names, and dates observed for US Federal holidays",

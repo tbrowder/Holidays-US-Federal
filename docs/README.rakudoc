@@ -23,24 +23,17 @@ actually observed as paid holidays off for federal employees
 is also found in the PDF document in the C</docs> directory herein.
 
 The module provides one routine which provides a list of the holidays
-for a given year. The list consists of an entry for each holidays
+for a given year. The list consists of an entry for each holiday
 with pertinent data for each.
 
 =begin code
-class FedHoliday is export {
-    has $.name;
-    has $.date;
-    has $.short-name;
-    has $.observed;
-}
-
+use Date::Event;
+class FedHoliday is Date::Event {};
 sub fed-holidays(:$year!, :$debug --> List) is export {
-    my FedHoliday @h = !get-holidays $year;
+    my FedHoliday @h = get-holidays $year;
     @h
 }
 =end code
-
-
 
 =head1 AUTHOR
 

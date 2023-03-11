@@ -1,18 +1,13 @@
 unit module Holidays::US::Federal;
 
 use Date::Utils;
+use Date::Event;
 
-class Holiday is export {
-    has Date $.date;
-    has Date $.date-observed;
-    has      $.name;
-    has      $.short-name;
-    has Int  $.id;
-}
- 
+class FedHoliday is Date::Event {};
+
 # 11 federal holidays as legislated in 5 U.S. Code S 6103
 #    names are as specified in that law
-our %holidays is export = [
+our %fedholidays is export = [
     1 => {
         name => "New Year's Day",
         date => "0000-01-01",
@@ -96,8 +91,8 @@ our %holidays is export = [
 
 sub get-holidays(:$year!, :$debug --> List) is export {
     my @h;
-    for %holidays -> $id {
-        my Holiday $h = calc-holiday-dates :$year, :$id, :$debug;
+    for %fedholidays -> $id {
+        my FedHoliday $h = calc-holiday-dates :$year, :$id, :$debug;
         @h.push: $h;
     }
     @h
@@ -111,20 +106,20 @@ sub get-holidays(:$year!, :$debug --> List) is export {
 #      it is observed on the previous Friday. When the date falls
 #      on a Sunday, it is observed on the following Monday.
 
-sub calc-holiday-dates(:$year!, :$id!, :$debug --> Holiday) is export {
-    # Holidays with attribute date => "0000-nn-nn" are subject to the weekend
+sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
+    # FedHolidays with attribute date => "0000-nn-nn" are subject to the weekend
     # rule and have two dates: actual and observed (which are the same
     # if the actual date is NOT on a weekend).
     #
-    # Holidays with attribute date => "" (empty) are subject to the 
+    # FedHolidays with attribute date => "" (empty) are subject to the 
     # directed or calculated rule and their actual and observed dates
     # are the same.
 
-    my $name          = %holidays{$id}<name>;
-    my $date          = %holidays{$id}<date>;
-    my $date-observed = %holidays{$id}<date-observed>;
-    my $short-name    = %holidays{$id}<short-name>;
-    my $check-id     = %holidays{$id}<id>;
+    my $name          = %fedholidays{$id}<name>;
+    my $date          = %fedholidays{$id}<date>;
+    my $date-observed = %fedholidays{$id}<date-observed>;
+    my $short-name    = %fedholidays{$id}<short-name>;
+    my $check-id      = %fedholidays{$id}<id>;
 
     if $date ~~ /^ '0000-' (\S\S) '-' (\S\S) / {
         my $month = ~$0;
@@ -150,7 +145,7 @@ sub calc-holiday-dates(:$year!, :$id!, :$debug --> Holiday) is export {
         $date = calc-date :$name, :$year, :$debug; 
         $date-observed = $date;
     }
-    Holiday.new: :$date, :$date-observed, :$id, :$name, :$short-name;
+    FedHoliday.new: :$date, :$date-observed, :$id, :$name, :$short-name;
 }
 
 sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
