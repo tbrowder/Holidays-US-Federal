@@ -40,7 +40,7 @@ our %fedholidays is export = [
     },
     11 => {
         name => "Christmas Day",
-        date => "0000-12-31",   
+        date => "0000-12-25",   
         date-observed => "", 
         short-name => "Christmas Day",
         id => 11,
@@ -96,7 +96,6 @@ sub get-fedholidays(:$year!, :$debug --> Hash) is export {
     for %fedholidays.keys -> $id {
         my FedHoliday $h = calc-holiday-dates :$year, :$id, :$debug;
         %h{$h.date}          = $h;
-        %h{$h.date-observed} = $h;
     }
     %h
 }
@@ -169,7 +168,7 @@ sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
         when $_.contains("Washington") {
             # Washington's Birthday               
             # third Monday of February
-            $month    = 2;
+            $month = 2;
             $dow   = 1;
             $nth   = 3;
             $date  = nth-day-of-week-in-month :$year, :$month, 

@@ -18,9 +18,11 @@ use Holidays::US::Federal;
 
 my $year = 2022;
 my %h = get-fedholidays :$year;
+# keys are the traditional dates
 my @d = %h.keys.sort({$^a cmp $^b});
 for @d -> $D {
     my Date $date .= new: $D;
+    #note "DEBUG: $date";
     my $h  = %h{$date};
     my $d  = $h.date;
     my $do = $h.date-observed;
@@ -47,28 +49,64 @@ for @d -> $D {
     # tests
     with $id {
         when /^1$/ {
+            # new years day
+            # traditional
             is $date, $d;
             is $date-1, $do;
         }
-        when /2/ {
+        when /2/ { 
+            # mlk 
+            is $date, $d;
+            is $date, $do;
         }
         when /3/ {
+            # gw bday
+            is $date, $d;
+            is $date, $do;
         }
         when /4/ {
+            # memorial day
+            is $date, $d;
+            is $date, $do;
         }
         when /5/ {
+            # juneteenth
+            # traditional
+            is $date, $d;
+            is $date+1, $do;
         }
         when /6/ {
+            # independence day
+            # traditional
+            is $date, $d;
+            is $date, $do;
         }
         when /7/ {
+            # labor day
+            is $date, $d;
+            is $date, $do;
         }
         when /8/ {
+            # columbus day
+            is $date, $d;
+            is $date, $do;
         }
         when /9/ {
+            # veterans day
+            # traditional
+            is $date, $d;
+            is $date, $do;
         }
         when /10/ {
+            # thanksgiving
+            is $date, $d;
+            is $date, $do;
         }
         when /11/ {
+            # christmas day
+            # traditional
+            is $date, $d;
+            is $date+1, $do;
         }
     }
 }
