@@ -29,6 +29,7 @@ for @d -> $D {
     my $n  = $h.name;
     my $ns = $h.short-name;
     my $id = $h.id;
+    #note "DEBUG id: $id";
 
     my $show-on-cal;
     if $d == $do {
@@ -47,66 +48,70 @@ for @d -> $D {
     }
 
     # tests
+    die "FATAL: \$id '$id' is an Int!!" if $id ~~ Int;
     with $id {
-        when /^1$/ {
+        when /^:i new/ {
             # new years day
             # traditional
             is $date, $d;
             is $date-1, $do;
         }
-        when /2/ { 
-            # mlk 
+        when /^:i mlk/ {
+            # mlk
             is $date, $d;
             is $date, $do;
         }
-        when /3/ {
+        when /^:i gwb/ {
             # gw bday
             is $date, $d;
             is $date, $do;
         }
-        when /4/ {
+        when /^:i mem/ {
             # memorial day
             is $date, $d;
             is $date, $do;
         }
-        when /5/ {
+        when /^:i june/ {
             # juneteenth
             # traditional
             is $date, $d;
             is $date+1, $do;
         }
-        when /6/ {
+        when /^:i jul4/ {
             # independence day
             # traditional
             is $date, $d;
             is $date, $do;
         }
-        when /7/ {
+        when /^:i lab/ {
             # labor day
             is $date, $d;
             is $date, $do;
         }
-        when /8/ {
+        when /^:i col/ {
             # columbus day
             is $date, $d;
             is $date, $do;
         }
-        when /9/ {
+        when /^:i vet/ {
             # veterans day
             # traditional
             is $date, $d;
             is $date, $do;
         }
-        when /10/ {
+        when /^:i thank/ {
             # thanksgiving
             is $date, $d;
             is $date, $do;
         }
-        when /11/ {
+        when /^:i christ/ {
             # christmas day
             # traditional
             is $date, $d;
             is $date+1, $do;
+        }
+        default {
+            die "FATAL: Unexpected 'when' \$_: '$_'";
         }
     }
 }

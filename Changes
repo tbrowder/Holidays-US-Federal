@@ -1,6 +1,8 @@
 Revision history for Holidays-US-Federal
 
 {{$NEXT}}
+    - Change $id values to a lower-case string fragment of the title
+    - Improve tests
 
 0.0.2  2023-03-13T05:36:36-05:00
     - Add tags

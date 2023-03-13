@@ -10,84 +10,84 @@ class FedHoliday is Date::Event {};
 # the 'short-name' values are not official but are the ones
 # used by the author in his calendars
 our %fedholidays is export = [
-    1 => {
+    new => {
         name => "New Year's Day",
         date => "0000-01-01",
-        date-observed => "", 
+        date-observed => "",
         short-name => "New Years Day",
-        id => 1,
+        id => 'new',
     },
-    5 => {
+    june => {
         name => "Juneteenth National Independence Day",
-        date => "0000-06-19", 
-        date-observed => "", 
+        date => "0000-06-19",
+        date-observed => "",
         short-name => "Juneteenth",
-        id => 5,
+        id => 'june',
     },
-    6 => {
+    jul4 => {
         name => "Independence Day",
-        date => "0000-07-04", 
+        date => "0000-07-04",
         date-observed => "Independence Day",
         short-name => "",
-        id => 6,
+        id => 'jul4',
     },
-    9 => {
+    vets => {
         name => "Veterans Day",
-        date => "0000-11-11", # month and day of the armistice ending WW I fighting  
+        date => "0000-11-11", # month and day of the armistice ending WW I fighting
         date-observed => "",
         short-name => "Veterans Day",
-        id => 9,
+        id => 'vets',
     },
-    11 => {
+    christ => {
         name => "Christmas Day",
-        date => "0000-12-25",   
-        date-observed => "", 
+        date => "0000-12-25",
+        date-observed => "",
         short-name => "Christmas Day",
-        id => 11,
+        id => 'christ',
     },
 
     # calculated actual and observed date
-    2 => {
+    mlk => {
         name => "Birthday of Martin Luther King, Jr.",
         date => "", # third Monday of January
-        date-observed => "", 
+        date-observed => "",
         short-name => "MLK Day",
-        id => 2,
+        id => 'mlk',
     },
-    3 => {
+    gwb => {
         name => "Washington's Birthday",
         date => "", # third Monday of February
         date-observed => "",
         short-name => "GW Birthday",
-        id => 3,
+        id => 'gwb',
     },
-    4 => {
+    memorial => {
         name => "Memorial Day",
         date => "", # last Monday in May
         date-observed => "",
         short-name => "Memorial Day",
-        id => 4,
+        id => 'memorial',
     },
-    7 => {
+    labor => {
         name => "Labor Day",
-        date => "", # first Monday in September 
-        date-observed => "", 
+        date => "", # first Monday in September
+        date-observed => "",
         short-name => "Labor Day",
-        id => 7,
+        id => 'labor',
     },
-    8 => {
+    colum => {
         name => "Columbus Day",
-        date => "", # second Monday in October 
+        date => "", # second Monday in October
         date-observed => "",
         short-name => "Columbus Day",
-        id => 8,
+        id => 'colum',
     },
-    10 => {
+    thanks => {
         name => "Thanksgiving Day",
         date => "", # fourth Thursday in November
         date-observed => "",
         short-name => "Thanksgiving",
-        id => 10,
+        id => 'thanks',
     },
 ];
 
@@ -113,7 +113,7 @@ sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
     # rule and have two dates: actual and observed (which are the same
     # if the actual date is NOT on a weekend).
     #
-    # FedHolidays with attribute date => "" (empty) are subject to the 
+    # FedHolidays with attribute date => "" (empty) are subject to the
     # directed or calculated rule and their actual and observed dates
     # are the same.
 
@@ -128,7 +128,7 @@ sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
         my $month = ~$0;
         my $day   = ~$1;
         # the actual date
-        $date = Date.new("$year-$month-$day");    
+        $date = Date.new("$year-$month-$day");
         # check if it's on a weekend
         my $dow = $date.day-of-week; # 1..7 Mon..Sun
         if $dow == 6 {
@@ -146,7 +146,7 @@ sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
     else {
         # calculated date:
         # date and observed are the same and must be calculated
-        $date = calc-date :$name, :$year, :$debug; 
+        $date = calc-date :$name, :$year, :$debug;
         $date-observed = $date;
     }
     FedHoliday.new: :$date, :$date-observed, :$id, :$name, :$short-name;
@@ -157,57 +157,57 @@ sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
     with $name {
         my ($month, $nth, $dow);
         when $_.contains("Martin") {
-            # Birthday of Martin Luther King, Jr. 
+            # Birthday of Martin Luther King, Jr.
             # third Monday of January
             $month = 1;
             $dow   = 1;
             $nth   = 3;
-            $date  = nth-day-of-week-in-month :$year, :$month, 
+            $date  = nth-day-of-week-in-month :$year, :$month,
                      :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Washington") {
-            # Washington's Birthday               
+            # Washington's Birthday
             # third Monday of February
             $month = 2;
             $dow   = 1;
             $nth   = 3;
-            $date  = nth-day-of-week-in-month :$year, :$month, 
+            $date  = nth-day-of-week-in-month :$year, :$month,
                      :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Memorial") {
-            # Memorial Day                        
+            # Memorial Day
             # last Monday in May
             $dow   = 1;
             $nth   = -1;
             $month = 5;
-            $date  = nth-day-of-week-in-month :$year, :$month, 
+            $date  = nth-day-of-week-in-month :$year, :$month,
                      :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Labor") {
-            # Labor Day                           
-            # first Monday in September 
+            # Labor Day
+            # first Monday in September
             $dow   = 1;
             $month = 9;
             $nth   = 1;
-            $date  = nth-day-of-week-in-month :$year, :$month, 
+            $date  = nth-day-of-week-in-month :$year, :$month,
                      :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Columbus") {
-            # Columbus Day                        
-            # second Monday in October 
+            # Columbus Day
+            # second Monday in October
             $dow   = 1;
             $month = 10;
             $nth   = 2;
-            $date  = nth-day-of-week-in-month :$year, :$month, 
+            $date  = nth-day-of-week-in-month :$year, :$month,
                      :day-of-week($dow), :$nth, :$debug;
         }
         when $_.contains("Thanksgiving") {
-            # Thanksgiving Day                    
+            # Thanksgiving Day
             # fourth Thursday in November
             $dow   = 4;
             $month = 11;
             $nth   = 4;
-            $date  = nth-day-of-week-in-month :$year, :$month, 
+            $date  = nth-day-of-week-in-month :$year, :$month,
                      :day-of-week($dow), :$nth, :$debug;
         }
         default {
@@ -216,4 +216,3 @@ sub calc-date(:$name!, :$year!, :$debug --> Date) is export {
     }
     $date
 }
-
