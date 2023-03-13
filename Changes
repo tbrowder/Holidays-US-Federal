@@ -1,6 +1,7 @@
 Revision history for Holidays-US-Federal
 
 {{$NEXT}}
+    - Remove docs/*pdf document (it wasn't official)
 
 0.0.3  2023-03-13T13:09:28-05:00
     - Change $id values to a lower-case string fragment of the title
