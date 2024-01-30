@@ -34,7 +34,7 @@ instance is one with two different date attributes: (1) the
 traditional C<date> and (2) the C<date-observed> which is the paid
 day-off for most federal government employees (as well as for many
 other employees in the US labor force).  If the dates are identical,
-then that date is the one to use on a calendar.  If they are
+then that date is the only one to use on a calendar.  If they are
 different, then both should be used.
 
 Note the holidays also have a C<short-name> attribute which is not
@@ -75,7 +75,7 @@ Tom Browder <tbrowder@acm.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-© 2023 Tom Browder
+© 2024 Tom Browder
 
 This library is free software; you may redistribute it or modify it under the Artistic License 2.0.
 

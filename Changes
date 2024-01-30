@@ -1,6 +1,9 @@
 Revision history for Holidays-US-Federal
 
 {{$NEXT}}
+    - Clarify wording in README as well as in the code
+    - Update copyright year
+    - Use zef for the Windows test
 
 0.0.4  2023-03-13T13:11:41-05:00
     - Remove docs/*pdf document (it wasn't official)

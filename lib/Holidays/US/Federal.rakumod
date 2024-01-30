@@ -3,6 +3,7 @@ unit module Holidays::US::Federal;
 use Date::Utils;
 use Date::Event;
 
+# The class is instantiated when defined in routine ' calc-holiday-dates'.  
 class FedHoliday is Date::Event {};
 
 # 11 federal holidays as legislated in 5 U.S. Code S 6103
@@ -102,16 +103,17 @@ sub get-fedholidays(:$year!, :$debug --> Hash) is export {
 
 # Routines for calculating dates observed for US federal holidays:
 # There are two types:
-#   1. Those holidays designated as a certain day of the month.
+#   1. Those holidays designated as being on a certain day of the month.
 #   2. Those holidays with assigned dates that may fall on
 #      weekends. When the date for a year falls on a Saturday,
 #      it is observed on the previous Friday. When the date falls
 #      on a Sunday, it is observed on the following Monday.
 
 sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
-    # FedHolidays defined in the %fedholidays hash with attribute date => "0000-nn-nn" are subject to the weekend
-    # rule and have two dates: actual and observed (which are the same
-    # if the actual date is NOT on a weekend).
+    # FedHolidays defined in the %fedholidays hash with attribute 
+    # date => "0000-nn-nn" are subject to the weekend rule and 
+    # have two dates: actual and observed (which are the same if the 
+    # actual date is NOT on a weekend).
     #
     # FedHolidays with attribute date => "" (empty) are subject to the
     # directed or calculated rule and their actual and observed dates
@@ -123,7 +125,7 @@ sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
     my $short-name    = %fedholidays{$id}<short-name>;
     my $check-id      = %fedholidays{$id}<id>;
 
-    # directed date
+    # directed date (subject to the weekend rule)
     if $date ~~ /^ '0000-' (\S\S) '-' (\S\S) / {
         my $month = ~$0;
         my $day   = ~$1;
