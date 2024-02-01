@@ -4,6 +4,8 @@ Revision history for Holidays-US-Federal
     - Clarify wording in README as well as in the code
     - Update copyright year
     - Use zef for the Windows test
+    - Add :$uid! to routine get-fedholidays so user can mix
+        the resulting hash with other Date::Event sets
 
 0.0.4  2023-03-13T13:11:41-05:00
     - Remove docs/*pdf document (it wasn't official)

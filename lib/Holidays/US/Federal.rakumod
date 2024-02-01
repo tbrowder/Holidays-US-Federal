@@ -3,7 +3,7 @@ unit module Holidays::US::Federal;
 use Date::Utils;
 use Date::Event;
 
-# The class is instantiated when defined in routine ' calc-holiday-dates'.  
+# The class is instantiated when defined in routine ' calc-holiday-dates'.
 class FedHoliday is Date::Event {};
 
 # 11 federal holidays as legislated in 5 U.S. Code S 6103
@@ -28,7 +28,7 @@ our %fedholidays is export = [
     jul4 => {
         name => "Independence Day",
         date => "0000-07-04",
-        date-observed => "Independence Day",
+        date-observed => "",
         short-name => "",
         id => 'jul4',
     },
@@ -110,9 +110,9 @@ sub get-fedholidays(:$year!, :$debug --> Hash) is export {
 #      on a Sunday, it is observed on the following Monday.
 
 sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) is export {
-    # FedHolidays defined in the %fedholidays hash with attribute 
-    # date => "0000-nn-nn" are subject to the weekend rule and 
-    # have two dates: actual and observed (which are the same if the 
+    # FedHolidays defined in the %fedholidays hash with attribute
+    # date => "0000-nn-nn" are subject to the weekend rule and
+    # have two dates: actual and observed (which are the same if the
     # actual date is NOT on a weekend).
     #
     # FedHolidays with attribute date => "" (empty) are subject to the
