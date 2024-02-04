@@ -6,6 +6,7 @@
   "build-depends": [
   ],
   "depends": [
+    "UUID::V4",
     "Text::Utils",
     "Date::Event",
     "Date::Utils"
@@ -15,6 +16,7 @@
   "name": "Holidays::US::Federal",
   "perl": "6.d",
   "provides": {
+    "Holidays::US::Data": "lib/Holidays/US/Data.rakumod",
     "Holidays::US::Federal": "lib/Holidays/US/Federal.rakumod"
   },
   "resources": [
