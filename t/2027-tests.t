@@ -1,5 +1,6 @@
 use Test;
 use Holidays::US::Federal;
+use UUID::V4;
 
 # YEAR: 2027
 
@@ -17,19 +18,35 @@ use Holidays::US::Federal;
 #  11 Christmas
 
 my $year = 2027;
-my %h = get-fedholidays :$year;
-# keys are the traditional dates
+my $set-id = uuid-v4;
+
+my %h = get-fedholidays :$year, :$set-id;
+# keys are the combination of "$set-id|traditional date"
 my @d = %h.keys.sort({$^a cmp $^b});
 for @d -> $D {
     my Date $date .= new: $D;
-    #note "DEBUG: $date";
-    my $h  = %h{$date};
+    my %hh = %h{$date};
+    # value of %hh is another hash keyed by "$set-id|$id
+    #    %h{$h.date}{$key} = $h;
+    # for this test there should only be one entry
+    my $h;
+    my $uid;
+    is %hh.elems, 1, "only one element as expected";
+    for %hh.keys -> $key {
+        my @w = $key.split('|');
+        my $sid = @w.head;
+        is $sid, $set-id, "set-id checks";
+        $uid = @w.tail;
+        $h   = %hh{$key};
+        last;
+    }
+
     my $d  = $h.date;
     my $do = $h.date-observed;
     my $n  = $h.name;
     my $ns = $h.short-name;
     my $id = $h.id;
-    #note "DEBUG id: $id";
+    is $uid, $id, "individual id checks";
 
     my $show-on-cal;
     if $d == $do {

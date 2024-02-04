@@ -7,11 +7,12 @@ use Holidays::US::Data;
 # The class is instantiated when defined in routine 'calc-holiday-dates'.
 class FedHoliday is Date::Event {}
 
-sub get-fedholidays(:$year!, :$debug --> Hash) is export {
+sub get-fedholidays(:$year!, :$set-id!, :$debug --> Hash) is export {
     my %h;
     for %fedholidays.keys -> $id {
         my FedHoliday $h = calc-holiday-dates :$year, :$id, :$debug;
-        %h{$h.date}          = $h;
+        my $key = $set-id ~ '|' ~ $id;
+        %h{$h.date}{$key} = $h;
     }
     %h
 }
