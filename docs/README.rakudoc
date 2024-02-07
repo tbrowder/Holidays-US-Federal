@@ -7,9 +7,32 @@ B<Holidays::US::Federal> - Provides names, dates, and dates observed for US Fede
 =head1 SYNOPSIS
 
 =begin code :lang<raku>
-
 use Holidays::US::Federal;
+use UUID::V4;
 
+my $year = 2025;
+my $set-id = uuid-v4; some uniqueuuid-v4;
+my %us = get-fedholidays :$year, :$set-id;
+# Keys of the '%us' hash are the combination of "$set-id|traditional date"
+my @d = %us.keys.sort({$^a cmp $^b}); # get array in date order
+for @d -> $D {
+    my Date $date .= new: $D; # get the Date key
+    my %h = %us{$date}; # All the events on that date, should be 1 for
+                        # this set of US holidays
+    # The value of %h is another hash keyed by: ($set-id ~ '|' ~ $id)
+    # but we only break it down for testing.
+    #    %h{$h.date}{$key} = $holiday;
+    #
+    my $holiday;
+    for %h.keys -> $key {
+        $holiday = %h{$key}; # the FedHoliday object
+        # use the data for a calendar day cell
+        my $d  = $holiday.date;
+        my $do = $holiday.date-observed;
+        my $n  = $holiday.name;
+        my $ns = $holiday.short-name;
+    }
+}
 =end code
 
 =head1 DESCRIPTION
