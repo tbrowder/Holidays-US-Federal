@@ -1,6 +1,10 @@
 Revision history for Holidays-US-Federal
 
 {{$NEXT}}
+    - Add 'our' to the exported sub (thanks @Xliff)
+    - Add 'short-day value to: (thanks @Xliff)
+      + Independence Day => 4th of July
+      + Christmas Day    => Christmas
     - Require Date::Event:ver<0.0.9+>
     - Do not export the local subroutines
     - Put holiday data hash in its own module

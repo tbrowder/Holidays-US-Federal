@@ -23,7 +23,7 @@ our %fedholidays is export = [
         name => "Independence Day",
         date => "0000-07-04",
         date-observed => "",
-        short-name => "",
+        short-name => "4th of July",
         id => 'jul4',
     },
     vets => {
@@ -37,7 +37,7 @@ our %fedholidays is export = [
         name => "Christmas Day",
         date => "0000-12-25",
         date-observed => "",
-        short-name => "Christmas Day",
+        short-name => "Christmas",
         id => 'christ',
     },
 
