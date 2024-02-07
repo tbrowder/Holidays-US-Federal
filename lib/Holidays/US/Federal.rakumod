@@ -25,7 +25,7 @@ our sub get-fedholidays(:$year!, :$set-id!, :$debug --> Hash) is export {
 #      it is observed on the previous Friday. When the date falls
 #      on a Sunday, it is observed on the following Monday.
 
-sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) { # is export {
+sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) {
     # FedHolidays defined in the %fedholidays hash with attribute
     # date => "0000-nn-nn" are subject to the weekend rule and
     # have two dates: actual and observed (which are the same if the
@@ -97,7 +97,10 @@ sub calc-date(:$name!, :$year!, :$debug --> Date) {
             # last Monday in May
             $dow   = 1;
             $nth   = -1;
-            $month = 5;
+            $month = 5;<<<<<<< new-ver
+74
+ 
+
             $date  = nth-day-of-week-in-month :$year, :$month,
                      :day-of-week($dow), :$nth, :$debug;
         }
