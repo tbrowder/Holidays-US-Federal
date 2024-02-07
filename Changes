@@ -10,6 +10,7 @@ Revision history for Holidays-US-Federal
     - Put holiday data hash in its own module
     - Clarify wording in README as well as in the code
     - Update copyright year
+    - Update README
     - Use zef for the Windows test
     - Add :$set-id! to routine get-fedholidays so user can mix
         the resulting hash with other Date::Event sets

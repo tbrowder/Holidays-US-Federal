@@ -17,11 +17,11 @@ DESCRIPTION
 
 **Holidays::US::Federal** is a module that provides information on the eleven official U.S. federal holidays as of 2023-03-08 according to data available online at [https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/](https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/). A description of the rules for traditional dates and when holidays are actually observed as paid holidays off for federal employees is also found on the site. All the data reflect current laws in Title 5 US Code Section 6103.
 
-This module provides a routine which provides a hash of the holidays for a given year keyed by each holiday's traditional `date`. Each key is a Raku `Date` and the key's value is a `class FedHoliday` object. The data are perpetual for any given year as long as Title 5 US Code Section 6103 stays unchanged.
+This module provides a routine which provides a hash of the holidays for a given year keyed by each holiday's traditional date. Each key is a Raku `Date`, and the key's value is a `class FedHoliday is Date::Event` object. The data are perpetual for any given year as long as Title 5 US Code Section 6103 stays unchanged.
 
 For this collection there should be no overlapping holidays. Each instance is one with two different date attributes: (1) the traditional `date` and (2) the `date-observed` which is the paid day-off for most federal government employees (as well as for many other employees in the US labor force). If the dates are identical, then that date is the only one to use on a calendar. If they are different, then both should be used.
 
-Note the holidays also have a `short-name` attribute which is not official but has the value used by the author for his calendars.
+Note the holidays also have a `short-name` attribute which is not official but has the value used by the author for his calendars in order to fit nicely in a day cell on Letter paper using the author's `Calendar` module. With that style, day cells should be a bit wider (but shorter) when using A4 paper, so the official name may fit satisfactorily in that case. Please file an issue if you have a suggested 'short-name' for those currently without a value.
 
   * NOTE: During the devlopment of this module, functions for finding dates relative to other dates were found to be necessary and were coded and published as a new Raku module: **Date:Utils**. Those routines are expected to be useful for various calendar creation projects. They are:
 
