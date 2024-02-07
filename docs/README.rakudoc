@@ -11,21 +11,23 @@ use Holidays::US::Federal;
 use UUID::V4;
 
 my $year = 2025;
-my $set-id = uuid-v4; some uniqueuuid-v4;
+my $set-id = uuid-v4; # A unique ID for the set of holidays so they can be
+                      # merged with other C<Date::Event> sets for calendar
+                      # generation;
 my %us = get-fedholidays :$year, :$set-id;
-# Keys of the '%us' hash are the combination of "$set-id|traditional date"
-my @d = %us.keys.sort({$^a cmp $^b}); # get array in date order
+# Keys of the '%us' hash are the C<$year>'s dates with holidays
+my @d = %us.keys.sort({$^a cmp $^b}); # Get array in date order
 for @d -> $D {
-    my Date $date .= new: $D; # get the Date key
+    my Date $date .= new: $D; # Get the Date
     my %h = %us{$date}; # All the events on that date, should be 1 for
                         # this set of US holidays
     # The value of %h is another hash keyed by: ($set-id ~ '|' ~ $id)
-    # but we only break it down for testing.
+    # but we only break that key down for testing.
     #    %h{$h.date}{$key} = $holiday;
     #
     my $holiday;
     for %h.keys -> $key {
-        $holiday = %h{$key}; # the FedHoliday object
+        $holiday = %h{$key}; # The C<FedHoliday> class object (a C<Date::Event>)
         # use the data for a calendar day cell
         my $d  = $holiday.date;
         my $do = $holiday.date-observed;
