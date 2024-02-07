@@ -1,6 +1,7 @@
 Revision history for Holidays-US-Federal
 
 {{$NEXT}}
+    - Change all workflows tests to: zef test .
     - Improve SYNOPSIS example in the README
     - Add 'our' to the exported sub (thanks @Xliff)
     - Add 'short-day value to: (thanks @Xliff)
