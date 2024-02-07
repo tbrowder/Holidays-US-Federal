@@ -47,6 +47,8 @@ for @d -> $D {
     my $ns = $h.short-name;
     my $id = $h.id;
     is $uid, $id, "individual id checks";
+    is $h.etype(100), "Holiday", "EType is 100 (holiday)";
+    is $h.etype, "Holiday", "EType is 100 (holiday)";
 
     my $show-on-cal;
     if $d == $do {

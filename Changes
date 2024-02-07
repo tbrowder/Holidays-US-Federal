@@ -1,6 +1,7 @@
 Revision history for Holidays-US-Federal
 
 {{$NEXT}}
+    - Require Date::Event:ver<0.0.9+>
     - Do not export the local subroutines
     - Put holiday data hash in its own module
     - Clarify wording in README as well as in the code

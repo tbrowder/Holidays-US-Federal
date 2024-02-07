@@ -8,7 +8,7 @@
   "depends": [
     "UUID::V4",
     "Text::Utils",
-    "Date::Event",
+    "Date::Event:ver<0.0.9+>",
     "Date::Utils"
   ],
   "description": "Provides dates, names, alternate names, and dates observed for US Federal holidays",

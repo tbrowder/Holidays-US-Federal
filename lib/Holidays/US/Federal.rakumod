@@ -67,7 +67,7 @@ sub calc-holiday-dates(:$year!, :$id!, :$debug --> FedHoliday) { # is export {
         $date = calc-date :$name, :$year, :$debug;
         $date-observed = $date;
     }
-    FedHoliday.new: :$date, :$date-observed, :$id, :$name, :$short-name;
+    FedHoliday.new: :Etype(100), :$date, :$date-observed, :$id, :$name, :$short-name;
 }
 
 sub calc-date(:$name!, :$year!, :$debug --> Date) { # is export {
