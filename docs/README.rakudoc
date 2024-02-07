@@ -19,12 +19,11 @@ my %us = get-fedholidays :$year, :$set-id;
 my @d = %us.keys.sort({$^a cmp $^b}); # Get array in date order
 for @d -> $D {
     my Date $date .= new: $D; # Get the Date
-    my %h = %us{$date}; # All the events on that date, should be 1 for
-                        # this set of US holidays
+    my %h = %us{$date};       # All the events on that date, should always be 1 for
+                              # this set of US holidays
     # The value of %h is another hash keyed by: ($set-id ~ '|' ~ $id)
     # but we only break that key down for testing.
     #    %h{$h.date}{$key} = $holiday;
-    #
     my $holiday;
     for %h.keys -> $key {
         $holiday = %h{$key}; # The C<FedHoliday> class object (a C<Date::Event>)
