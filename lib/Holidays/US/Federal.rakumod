@@ -97,10 +97,7 @@ sub calc-date(:$name!, :$year!, :$debug --> Date) {
             # last Monday in May
             $dow   = 1;
             $nth   = -1;
-            $month = 5;<<<<<<< new-ver
-74
- 
-
+            $month = 5;
             $date  = nth-day-of-week-in-month :$year, :$month,
                      :day-of-week($dow), :$nth, :$debug;
         }
