@@ -4,7 +4,7 @@ unit module Holidays::US::Data;
 #    names are as specified in that law
 # the 'short-name' values are not official but are the ones
 # used by the author in his calendars
-our %fedholidays is export = [
+our %fedholidays is export = %(
     new => {
         name => "New Year's Day",
         date => "0000-01-01",
@@ -84,4 +84,4 @@ our %fedholidays is export = [
         short-name => "Thanksgiving",
         id => 'thanks',
     },
-];
+);
