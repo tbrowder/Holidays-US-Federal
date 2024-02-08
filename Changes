@@ -2,6 +2,24 @@ Revision history for Holidays-US-Federal
 
 {{$NEXT}}
 
+0.0.5  2024-02-07T10:57:16-06:00
+    - Use recoommended "%( )" bracket pair for hashes
+    - Change all workflows tests to: zef test .
+    - Improve SYNOPSIS example in the README
+    - Add 'our' to the exported sub (thanks @Xliff)
+    - Add 'short-day value to: (thanks @Xliff)
+      + Independence Day => 4th of July
+      + Christmas Day    => Christmas
+    - Require Date::Event:ver<0.0.9+>
+    - Do not export the local subroutines
+    - Put holiday data hash in its own module
+    - Clarify wording in README as well as in the code
+    - Update copyright year
+    - Update README
+    - Use zef for the Windows test
+    - Add :$set-id! to routine get-fedholidays so user can mix
+        the resulting hash with other Date::Event sets
+
 0.0.4  2023-03-13T13:11:41-05:00
     - Remove docs/*pdf document (it wasn't official)
 
