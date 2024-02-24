@@ -1,6 +1,8 @@
 Revision history for Holidays-US-Federal
 
 {{$NEXT}}
+    - Add new subroutine with tests:
+      + get-fedholidays-hashlist(:$year --> Hash)
 
 0.0.5  2024-02-07T10:57:16-06:00
     - Use recoommended "%( )" bracket pair for hashes

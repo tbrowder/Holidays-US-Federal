@@ -51,17 +51,17 @@ for @d -> $D {
     is $h.etype, "Holiday", "EType is 100 (holiday)";
 
     my $show-on-cal;
-    if $d == $do {
+    if $d eq $do {
         # traditional and observed
         # show traditional name on calendar
         $show-on-cal = $ns;
     }
-    elsif $date == $d {
+    elsif $date eq $d {
         # traditional
         # show traditional name on calendar
         $show-on-cal = $ns;
     }
-    elsif $date == $do {
+    elsif $date eq $do {
         # observed
         # show "Fed. Holiday" on calendar
     }

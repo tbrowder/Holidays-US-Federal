@@ -7,6 +7,23 @@ use Holidays::US::Data;
 # The class is instantiated when defined in routine 'calc-holiday-dates'.
 class FedHoliday is Date::Event {}
 
+our sub get-fedholidays-hashlist(:$year!, :$debug --> Hash) is export {
+    # The hash is keyed by Date with value of an array of events on
+    # that Date.
+    my %h;
+    for %fedholidays.keys -> $id {
+        my FedHoliday $h = calc-holiday-dates :$year, :$id, :$debug;
+        my $date = $h.date;
+        if %h{$date}:exists {
+            %h{$date}.push: $h;
+        }
+        else {
+            %h{$date}.push: $h;
+        }
+    }
+    %h;
+}
+
 our sub get-fedholidays(:$year!, :$set-id!, :$debug --> Hash) is export {
     my %h;
     for %fedholidays.keys -> $id {
